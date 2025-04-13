@@ -56,12 +56,19 @@ const ResultScreen = () => {
             <ScoreCircle score={score} />
           </div>
 
-          <p className="w-[80%] mx-auto text-[#2A2D2D] font-inter font-normal text-[18px] leading-[28px] tracking-[-0.01em] text-center">
-            While you correctly formed several sentences, there are a couple of areas where
-            improvement is needed. Pay close attention to sentence structure and word
-            placement to ensure clarity and correctness. Review your responses below
-            for more details.
-          </p>
+          {score === 0 ? (
+  <p className="w-[80%] mx-auto  text-[#2A2D2D] font-inter font-normal text-[18px] leading-[28px] tracking-[-0.01em] text-center">
+    Don’t worry! Everyone starts somewhere. Review your answers below, try again,
+    and keep practicing — you'll improve in no time!
+  </p>
+) : (
+  <p className="w-[80%] mx-auto text-[#2A2D2D] font-inter font-normal text-[18px] leading-[28px] tracking-[-0.01em] text-center">
+    While you correctly formed several sentences, there are a couple of areas where
+    improvement is needed. Pay close attention to sentence structure and word
+    placement to ensure clarity and correctness. Review your responses below
+    for more details.
+  </p>
+)}
 
           <div className="flex flex-col items-center mt-6">
             <button
