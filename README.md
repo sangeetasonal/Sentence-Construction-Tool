@@ -30,16 +30,16 @@ An interactive React-based educational game that helps users improve their gramm
 ## 🖼 Screenshots
 
 ### 🏠 Home Page  
-![Home](../sentence-construction-tool/src/assets/screensort/1.png)
+![Home](./src/assets/screensort/1.png)
 
 ### 🧩 Quiz Page  
-![Quiz](../sentence-construction-tool//src/assets/screensort/2.png)
+![Quiz](./src/assets/screensort/2.png)
 
 ### 🏁 Result Page  
-![Result](../sentence-construction-tool//src//assets//screensort/3.png)
+![Result](./src/assets/screensort/3.png)
 
 ### 📋 Feedback Section (Correct/Incorrect)  
-![Feedback](../sentence-construction-tool//src/assets/screensort/4.png)
+![Feedback](./src/assets/screensort/4.png)
 
 ---
 
