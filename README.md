@@ -14,7 +14,7 @@ An interactive React-based educational game that helps users improve their gramm
 - 🔁 **State Management** – User score and answers are stored using `localStorage`.
 - ✅ **Responsive Design** – Fully responsive and mobile-friendly UI.
 - 📦 **JSON Server Support** – Questions are fetched from a local JSON server or file.
-- 💅 **Modern UI** – Built with React, Tailwind CSS, and shadcn/ui (optional).
+- 💅 **Modern UI** – Built with React, Tailwind CSS.
 
 ---
 
