@@ -10,6 +10,7 @@ const StartPage = () => {
   const handleStart = () => {
     navigate("/quiz");
   };
+  
 
   return (
     <div className="min-h-screen bg-[#F8F8F8]">
