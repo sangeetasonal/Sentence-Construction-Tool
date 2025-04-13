@@ -40,7 +40,6 @@ const QuestionCard = () => {
     return () => clearInterval(interval);
   }, [timer, questions, currentIndex, navigate]);
 
-  // Handle moving to the next question
 
   const handleNext = () => {
     const current = questions[currentIndex];
@@ -57,8 +56,8 @@ const QuestionCard = () => {
     localStorage.setItem("questionResults", JSON.stringify([...prevResults, questionResult]));
   
     const updatedScore = isCorrect ? score + 10 : score;
-    setScore(updatedScore); // Update React state
-    localStorage.setItem("score", updatedScore); // Save each time
+    setScore(updatedScore); 
+    localStorage.setItem("score", updatedScore); 
     localStorage.setItem("total", questions.length);
   
     if (currentIndex < questions.length - 1) {

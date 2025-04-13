@@ -7,11 +7,10 @@ const ScoreCircle = ({ score }) => {
   const circumference = 2 * Math.PI * normalizedRadius;
   const strokeDashoffset = score === 100 ? 0 : circumference - (score / 100) * circumference;
 
-  // Get color based on score
   const getColor = () => {
-    if (score >= 70) return "#3A913F";        // Green
-    if (score < 30) return "#F97316";         // Orange
-    return "#FACC15";                         // Yellow
+    if (score >= 70) return "#3A913F";        
+    if (score < 30) return "#F97316";        
+    return "#FACC15";                        
   };
 
   const color = getColor();
@@ -44,13 +43,21 @@ const ScoreCircle = ({ score }) => {
         />
       </svg>
       <div className="absolute flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold" style={{ color }}>
-          {score}
-        </span>
-        <span className="text-sm" style={{ color }}>
-          Overall Score
-        </span>
-      </div>
+  <span
+    className={`text-3xl font-bold ${
+      score >= 70 ? "text-[#3A913F]" : score < 30 ? "text-orange-500" : "text-yellow-400"
+    }`}
+  >
+    {score}
+  </span>
+  <span
+    className={`text-sm ${
+      score >= 70 ? "text-[#3A913F]" : score < 30 ? "text-orange-500" : "text-yellow-400"
+    }`}
+  >
+    Overall Score
+  </span>
+</div>
     </div>
   );
 };

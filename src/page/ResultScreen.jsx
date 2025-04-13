@@ -3,14 +3,32 @@ import { useNavigate } from "react-router-dom";
 import ArrowLeft from "../assets/ArrowLeft.png";
 import dotsIcon from "../assets/dots.png";
 import scrollIcon from "../assets/scroll-down.png";
+import ScoreCircle from "../component/ScoreCircle";
 
-import ScoreCircle from "../component/ScoreCircle"; // adjust path if needed
+//  Helper function to fill the sentence with words
+const fillSentence = (prompt, words, className = "") => {
+  const parts = prompt.split("_____________");
+  let sentence = [];
+
+  parts.forEach((part, index) => {
+    sentence.push(<span key={`part-${index}`}>{part}</span>);
+    if (index < words.length) {
+      sentence.push(
+        <span key={`word-${index}`} className={`font-semibold ${className}`}>
+          {" " + words[index] + " "}
+        </span>
+      );
+    }
+  });
+
+  return sentence;
+};
 
 const ResultScreen = () => {
   const navigate = useNavigate();
   const [score, setScore] = useState(0);
   const [questionResults, setQuestionResults] = useState([]);
-  const [showQuestions, setShowQuestions] = useState(false); // State to control visibility of questions
+  const [showQuestions, setShowQuestions] = useState(false);
 
   useEffect(() => {
     const storedScore = localStorage.getItem("score");
@@ -20,30 +38,16 @@ const ResultScreen = () => {
     if (storedResults) setQuestionResults(JSON.parse(storedResults));
   }, []);
 
-  const getScoreColor = () => {
-    if (score >= 60) return "text-[#317F39] border-[#317F39]";
-    if (score < 30) return "text-orange-500 border-orange-500";
-    return "text-[rgb(255,_106,_0)] border-[rgb(255,_106,_0)]";
-  };
-
   return (
-    <div className="min-h-screen bg-[#F8F8F8] ">
+    <div className="bg-[#F8F8F8]">
+    <div className="min-h-screen bg-[#F8F8F8]">
       {/* Navbar */}
       <div className="w-full relative flex items-center justify-center px-4 py-4 bg-[#F8F8F8BF] backdrop-blur-[50px] shadow-[0px_2px_36px_0px_#00000014]">
-        {/* Left Arrow */}
-        <button  className="absolute left-4">
+        <button className="absolute left-4" onClick={() => navigate(-2)}>
           <img src={ArrowLeft} alt="Back" className="w-5 h-5" />
         </button>
-
-        {/* Title */}
         <h1 className="text-lg font-medium text-[#414343]">Sentence Construction</h1>
-
-        {/* Dots Icon on Right */}
-        <img
-          src={dotsIcon}
-          alt="Menu"
-          className="w-5 h-5 absolute right-[4.625rem]"
-        />
+        <img src={dotsIcon} alt="Menu" className="w-5 h-5 absolute right-[4.625rem]" />
       </div>
 
       <div className="max-w-4xl mx-auto">
@@ -71,63 +75,73 @@ const ResultScreen = () => {
               src={scrollIcon}
               alt="Scroll Icon"
               className="mt-2 cursor-pointer"
-              onClick={() => setShowQuestions(!showQuestions)} // Toggle visibility on click
+              onClick={() => setShowQuestions(!showQuestions)} 
             />
           </div>
-
         </div>
 
         {/* Questions List */}
         {showQuestions && (
-          <div className="w-[80%] mx-auto mb-16 space-y-20">
+          <div className=" mx-auto mb-16 space-y-20">
             {questionResults && questionResults.length > 0 ? (
-              questionResults.map((q, idx) => (
-                <div
-                  key={idx}
-                  className="relative bg-white rounded-xl shadow-sm p-6 border border-[#E5E7EB]"
-                >
-                  {/* Top-right number */}
-                  <div className="absolute top-3 right-4 text-sm text-gray-400">
-                    {idx + 1}/{questionResults.length}
-                  </div>
+              questionResults.map((q, idx) => {
+                const correctWords = Array.isArray(q.correctAnswer)
+                  ? q.correctAnswer
+                  : typeof q.correctAnswer === "string"
+                  ? q.correctAnswer.split(" ")
+                  : [];
 
-                  {/* Prompt */}
-                  <div className="text-xs text-gray-500 font-medium mb-2">Prompt</div>
-                  <p className="text-gray-800 text-base mb-4">{q.prompt}</p>
+                const userWords = Array.isArray(q.userAnswer)
+                  ? q.userAnswer
+                  : typeof q.userAnswer === "string"
+                  ? q.userAnswer.split(" ")
+                  : [];
 
-                  {/* Response block */}
+                return (
                   <div
-                    className={`rounded-lg p-4 ${
-                      q.isCorrect ? "bg-green-50" : "bg-red-50"
-                    }`}
+                    key={idx}
+                    className="relative bg-white rounded-xl shadow-sm p-6 border border-[#E5E7EB]"
                   >
-                    <div className="text-sm text-gray-500 font-medium mb-1 flex items-center">
-                      Your response
-                      <span
-                        className={`ml-2 font-semibold ${
-                          q.isCorrect ? "text-green-600" : "text-red-500"
-                        }`}
-                      >
-                        {q.isCorrect ? "Correct" : "Incorrect"}
-                      </span>
+                    {/* Top-right number */}
+                    <div className="absolute top-3 right-4 text-sm text-gray-400">
+                      {idx + 1}/{questionResults.length}
                     </div>
-                    <p className="text-gray-800 text-base">{q.userAnswer}</p>
 
-                    {!q.isCorrect && (
-                      <div className="mt-3">
-                        <p className="text-sm text-gray-500">Correct Order:</p>
-                        <p className="text-gray-800 font-medium text-base">{q.correctAnswer}</p>
+                    {/* Prompt */}
+                    <div className="text-xs text-gray-500 font-medium mb-2">Prompt</div>
+                    <p className="text-gray-800 text-base mb-4">{q.prompt}</p>
+
+                    {/* Response block */}
+                    <div className={`rounded-lg p-4 ${q.isCorrect ? "bg-green-50" : "bg-red-50"}`}>
+                      <div className="text-sm text-gray-500 font-medium mb-1 flex items-center">
+                        Your response
+                        <span className={`ml-2 font-semibold ${q.isCorrect ? "text-green-600" : "text-red-500"}`}>
+                          {q.isCorrect ? "Correct" : "Incorrect"}
+                        </span>
                       </div>
-                    )}
+                      <p className="text-gray-800 text-base">
+                        {fillSentence(q.prompt, userWords, q.isCorrect ? "text-green-600" : "text-red-500")}
+                      </p>
+
+                      {!q.isCorrect && (
+                        <div className="mt-3">
+                          <p className="text-sm text-gray-500">Correct Sentence:</p>
+                          <p className="text-gray-800 font-medium text-base">
+                            {fillSentence(q.prompt, correctWords, "text-green-600")}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <p className="text-center text-gray-500">No results to display.</p>
             )}
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 };
