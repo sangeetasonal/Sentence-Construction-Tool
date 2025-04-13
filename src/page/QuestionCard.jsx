@@ -19,7 +19,7 @@ const QuestionCard = () => {
     localStorage.removeItem("questionResults");
   
     axios
-      .get("http://localhost:3001/data")
+      .get("https://sentence-construction-tool-3l4k.onrender.com/data")
       .then((res) => setQuestions(res.data.questions))
       .catch((err) => console.error("Failed to load questions:", err));
   }, []);
@@ -40,35 +40,36 @@ const QuestionCard = () => {
     return () => clearInterval(interval);
   }, [timer, questions, currentIndex, navigate]);
 
+  // Handle moving to the next question
 
-  const handleNext = () => {
-    const current = questions[currentIndex];
-    const isCorrect = JSON.stringify(userAnswers) === JSON.stringify(current.correctAnswer);
-  
-    const questionResult = {
-      prompt: current.question,
-      correctAnswer: current.correctAnswer.join(" "),
-      userAnswer: userAnswers.join(" "),
-      isCorrect: isCorrect,
-    };
-  
-    const prevResults = JSON.parse(localStorage.getItem("questionResults")) || [];
-    localStorage.setItem("questionResults", JSON.stringify([...prevResults, questionResult]));
-  
-    const updatedScore = isCorrect ? score + 10 : score;
-    setScore(updatedScore); 
-    localStorage.setItem("score", updatedScore); 
-    localStorage.setItem("total", questions.length);
-  
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setTimer(30);
-      setUserAnswers([]);
-    } else {
-      navigate("/result");
-    }
+ const handleNext = () => {
+  const current = questions[currentIndex];
+  const isCorrect = JSON.stringify(userAnswers) === JSON.stringify(current.correctAnswer);
+
+  const questionResult = {
+    prompt: current.question,
+    correctAnswer: current.correctAnswer.join(" "),
+    userAnswer: userAnswers.join(" "),
+    isCorrect: isCorrect,
   };
-  
+
+  const prevResults = JSON.parse(localStorage.getItem("questionResults")) || [];
+  localStorage.setItem("questionResults", JSON.stringify([...prevResults, questionResult]));
+
+  const updatedScore = isCorrect ? score + 10 : score;
+  setScore(updatedScore); // Update React state
+  localStorage.setItem("score", updatedScore); // Save each time
+  localStorage.setItem("total", questions.length);
+
+  if (currentIndex < questions.length - 1) {
+    setCurrentIndex(currentIndex + 1);
+    setTimer(30);
+    setUserAnswers([]);
+  } else {
+    navigate("/result");
+  }
+};
+
   
 
   const current = questions[currentIndex];
